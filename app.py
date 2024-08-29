@@ -14,8 +14,6 @@ web_url=st.text_input("Enter Web Url")
 with st.sidebar:
     groq_api_key=st.text_input("Enter Groq API key", type="password")
 
-llm=ChatGroq(groq_api_key=groq_api_key, model="Gemma2-9b-It")
-
 text_template="""
 Provide a summary of the following product data in 500 words:
 Content:{text}
@@ -30,6 +28,7 @@ if st.button("Summarize"):
         elif not validators.url(web_url):
             st.error("Please enter a valid Url. It can be website url")
         else:
+            llm=ChatGroq(groq_api_key=groq_api_key, model="Gemma2-9b-It")
             loader=WebBaseLoader(web_path=[web_url])
             docs=loader.load()
             chain=load_summarize_chain(llm=llm, chain_type="map_reduce", combine_prompt=prompt, verbose=True)
